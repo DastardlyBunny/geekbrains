@@ -1,6 +1,6 @@
 package ru.geekbrains.lesson1;
 
-public class Lesson {
+public class MainApp {
 
     int i = 2147483647;
     byte b = 127;
