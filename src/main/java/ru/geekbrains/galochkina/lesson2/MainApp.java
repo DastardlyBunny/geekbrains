@@ -1,4 +1,4 @@
-package ru.geekbrains.lesson2;
+package ru.geekbrains.galochkina.lesson2;
 
 import java.util.Arrays;
 import java.util.stream.IntStream;
@@ -10,7 +10,7 @@ public class MainApp {
         System.out.println(checkBalance(balanceArray));
 
         int[] indexerArray = {1, 2, 3, 4, 5};
-        System.out.println(Arrays.toString(moveArrayIndexesByNum(indexerArray, -11)));
+        System.out.println(Arrays.toString(moveArrayIndexesByNum(indexerArray, -6)));
     }
 
     private static boolean checkBalance(int[] array) {
