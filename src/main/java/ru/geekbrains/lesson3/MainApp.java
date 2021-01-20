@@ -5,9 +5,9 @@ import java.util.Scanner;
 
 public class MainApp {
 
-    private final static String[] words = {"apple", "orange", "lemon", "banana", "apricot", "avocado", "broccoli", "carrot", "cherry", "garlic", "grape", "melon", "leak", "kiwi", "mango", "mushroom", "nut", "olive", "pea", "peanut", "pear", "pepper", "pineapple", "pumpkin", "potato"};
+    private static final String[] words = {"apple", "orange", "lemon", "banana", "apricot", "avocado", "broccoli", "carrot", "cherry", "garlic", "grape", "melon", "leak", "kiwi", "mango", "mushroom", "nut", "olive", "pea", "peanut", "pear", "pepper", "pineapple", "pumpkin", "potato"};
 
-    private final static StringBuilder hashtagString = new StringBuilder("###############");
+    private static final StringBuilder hashtagString = new StringBuilder("###############");
 
     public static void main(String[] args) {
         Random random = new Random();
