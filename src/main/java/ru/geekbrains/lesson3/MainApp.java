@@ -24,6 +24,7 @@ public class MainApp {
             System.out.println("Введите загаданное слово:");
 
             userWord = scanner.nextLine().toLowerCase();
+
             for (int i = 0; i < hashtagString.length(); i++) {
                 if (i < randomWord.length() && i < userWord.length()) {
                     if (userWord.charAt(i) == randomWord.charAt(i)) {
