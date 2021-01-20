@@ -17,8 +17,6 @@ public class MainApp {
     }
 
     private static void playGame(String word) {
-        System.out.println(word); // закомитить
-
         Scanner scanner = new Scanner(System.in);
         String userWord;
         do {
