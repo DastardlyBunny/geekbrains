@@ -16,7 +16,7 @@ public class MainApp {
         playGame(words[randomNumber]);
     }
 
-    private static void playGame(String word) {
+    private static void playGame(String randomWord) {
         Scanner scanner = new Scanner(System.in);
         String userWord;
         do {
@@ -25,15 +25,15 @@ public class MainApp {
 
             userWord = scanner.nextLine().toLowerCase();
             for (int i = 0; i < hashtagString.length(); i++) {
-                if (i < word.length() && i < userWord.length()) {
-                    if (userWord.charAt(i) == word.charAt(i)) {
+                if (i < randomWord.length() && i < userWord.length()) {
+                    if (userWord.charAt(i) == randomWord.charAt(i)) {
                         hashtagString.setCharAt(i, userWord.charAt(i));
                         continue;
                     }
                 }
                 hashtagString.setCharAt(i, '#');
             }
-        } while (!userWord.equals(word));
+        } while (!userWord.equals(randomWord));
 
         System.out.println("Вы угадали!");
     }
