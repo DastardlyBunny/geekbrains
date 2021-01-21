@@ -12,7 +12,7 @@ public class MainApp {
     public static void main(String[] args) {
         Random random = new Random();
         int randomNumber = random.nextInt(words.length);
-        System.out.println(words[randomNumber]);
+
         playGame(words[randomNumber]);
     }
 
