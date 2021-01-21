@@ -12,7 +12,7 @@ public class MainApp {
     public static void main(String[] args) {
         Random random = new Random();
         int randomNumber = random.nextInt(words.length);
-
+        System.out.println(words[randomNumber]);
         playGame(words[randomNumber]);
     }
 
@@ -25,6 +25,10 @@ public class MainApp {
 
             userWord = scanner.nextLine().toLowerCase();
 
+            if (userWord.equals(randomWord)) {
+                break;
+            }
+
             for (int i = 0; i < hashtagString.length(); i++) {
                 if (i < randomWord.length() && i < userWord.length()) {
                     if (userWord.charAt(i) == randomWord.charAt(i)) {
@@ -34,7 +38,7 @@ public class MainApp {
                 }
                 hashtagString.setCharAt(i, '#');
             }
-        } while (!userWord.equals(randomWord));
+        } while (true);
 
         System.out.println("Вы угадали!");
     }
