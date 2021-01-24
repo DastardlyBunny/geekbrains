@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class MainApp {
 
-    private static final int SIZE = 5;
+    private static final int SIZE = 3;
 
     private static final char[][] map = new char[SIZE][SIZE];
 
@@ -16,9 +16,11 @@ public class MainApp {
 
     private static final char DOT_EMPTY = '*';
 
-    private static final int WIN_COUNT = 4;
+    private static final int WIN_COUNT = 2;
 
     private static final String[] userAnswer = { "ДА", "НЕТ" };
+
+    private static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
         initMap();
@@ -26,8 +28,6 @@ public class MainApp {
 
         while (true) {
             try {
-                Scanner scanner = new Scanner(System.in);
-
                 System.out.println("Введите число Y:");
                 int y = scanner.nextInt() - 1;
 
@@ -36,12 +36,12 @@ public class MainApp {
 
                 if (canTurn()) {
                     if (humanTurn(y, x)) {
-                        if (!playAgain("Человек победил! Начать заново?", scanner)) {
+                        if (!playAgain("Человек победил! Начать заново?")) {
                             break;
                         }
                     }
                 } else {
-                    if (!playAgain("Ничья. Начать заново?", scanner)) {
+                    if (!playAgain("Ничья. Начать заново?")) {
                         break;
                     }
                 }
@@ -49,12 +49,12 @@ public class MainApp {
                 if (canTurn()) {
                     aiTurn();
                     if (isWin(DOT_AI)) {
-                        if (!playAgain("ИИ победил! Начать заново?", scanner)) {
+                        if (!playAgain("ИИ победил! Начать заново?")) {
                             break;
                         }
                     }
                 } else {
-                    if (!playAgain("Ничья. Начать заново?", scanner)) {
+                    if (!playAgain("Ничья. Начать заново?")) {
                         break;
                     }
                 }
@@ -127,6 +127,7 @@ public class MainApp {
             variantsString.append(i + 1);
             variantsString.append(" - ");
             variantsString.append(userAnswer[i]);
+
             if (i != userAnswer.length - 1) {
                 variantsString.append(", ");
             }
@@ -160,6 +161,7 @@ public class MainApp {
         do {
             int x = random.nextInt(SIZE);
             int y = random.nextInt(SIZE);
+
             if (map[x][y] == DOT_EMPTY) {
                 map[x][y] = DOT_AI;
                 break;
@@ -167,14 +169,16 @@ public class MainApp {
         } while (true);
     }
 
-    private static boolean playAgain(String message, Scanner scanner)
+    private static boolean playAgain(String message)
     {
         printMap();
         printMessageUserAnswer(message);
 
+        int answer;
+
         while (true) {
             try {
-                int answer = scanner.nextInt();
+                answer = scanner.nextInt();
                 switch(answer) {
                     case 1:
                         initMap();
