@@ -41,15 +41,15 @@ public class MainApp {
                     printMessage("Ничья");
                 }
 
-//                if (canTurn()) {
-//                    aiTurn();
-//                    if (isWin(DOT_AI)) {
-//                        printMessage("ИИ победил");
-//                        break;
-//                    }
-//                } else {
-//                    printMessage("Ничья");
-//                }
+                if (canTurn()) {
+                    aiTurn();
+                    if (isWin(DOT_AI)) {
+                        printMessage("ИИ победил");
+                        break;
+                    }
+                } else {
+                    printMessage("Ничья");
+                }
                 printMap();
             } catch (InputMismatchException ex) {
                 printMessage("Можно вводить только цифры от 1 до " + SIZE);
@@ -112,7 +112,7 @@ public class MainApp {
     }
 
     private static boolean isWinX (int x, int y, char dotType) {
-        if (x + WIN_COUNT > SIZE || y == SIZE) {
+        if (SIZE - x < WIN_COUNT || y == SIZE) {
             return false;
         }
         for (int i = 0; i < WIN_COUNT; i++) {
@@ -125,7 +125,7 @@ public class MainApp {
     }
 
     private static boolean isWinY (int x, int y, char dotType) {
-        if (x == SIZE || y + WIN_COUNT > SIZE) {
+        if (x == SIZE || SIZE - y < WIN_COUNT) {
             return false;
         }
         for (int i = 0; i < WIN_COUNT; i++) {
@@ -138,7 +138,7 @@ public class MainApp {
     }
 
     private static boolean isWinDiagonalLeft (int x, int y, char dotType) {
-        if (x + WIN_COUNT > SIZE || y + WIN_COUNT > SIZE) {
+        if (SIZE - x < WIN_COUNT || SIZE - y < WIN_COUNT) {
             return false;
         }
         for (int i = 0; i < WIN_COUNT; i++) {
@@ -151,7 +151,7 @@ public class MainApp {
     }
 
     private static boolean isWinDiagonalRight(int x, int y, char dotType) {
-        if (y - (WIN_COUNT - 1) < 0 || x + WIN_COUNT > SIZE || y - WIN_COUNT > SIZE) {
+        if (y - (WIN_COUNT - 1) < 0 || SIZE - x < WIN_COUNT || SIZE + y < WIN_COUNT) {
             return false;
         }
         for (int i = 0; i < WIN_COUNT; i++) {
