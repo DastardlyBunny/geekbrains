@@ -8,7 +8,7 @@ public class MainApp {
 
     private static final int SIZE = 5;
 
-    private static char[][] map = new char[SIZE][SIZE];;
+    private static final char[][] map = new char[SIZE][SIZE];
 
     private static final char DOT_HUMAN = 'X';
 
