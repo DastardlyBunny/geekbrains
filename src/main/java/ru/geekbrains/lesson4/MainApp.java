@@ -18,6 +18,8 @@ public class MainApp {
 
     private static final int WIN_COUNT = 4;
 
+    private static final String[] userAnswer = { "ДА", "НЕТ" };
+
     public static void main(String[] args) {
         initMap();
         printMap();
@@ -34,27 +36,35 @@ public class MainApp {
 
                 if (canTurn()) {
                     if (humanTurn(y, x)) {
-                        printMessage("Человек победил");
-                        break;
+                        if (!playAgain("Человек победил! Начать заново?", scanner)) {
+                            break;
+                        }
                     }
                 } else {
-                    printMessage("Ничья");
+                    if (!playAgain("Ничья. Начать заново?", scanner)) {
+                        break;
+                    }
                 }
 
                 if (canTurn()) {
                     aiTurn();
                     if (isWin(DOT_AI)) {
-                        printMessage("ИИ победил");
-                        break;
+                        if (!playAgain("ИИ победил! Начать заново?", scanner)) {
+                            break;
+                        }
                     }
                 } else {
-                    printMessage("Ничья");
+                    if (!playAgain("Ничья. Начать заново?", scanner)) {
+                        break;
+                    }
                 }
                 printMap();
             } catch (InputMismatchException ex) {
-                printMessage("Можно вводить только цифры от 1 до " + SIZE);
+                printMap();
+                System.out.println("Можно вводить только цифры от 1 до " + SIZE);
             } catch (Exception ex) {
-                printMessage(ex.getMessage());
+                printMap();
+                System.out.println(ex.getMessage());
             }
             System.out.println();
         }
@@ -98,11 +108,93 @@ public class MainApp {
         return false;
     }
 
+    private static boolean humanTurn(int y, int x) throws Exception {
+        if (x < SIZE && x >= 0 && y < SIZE && y >= 0) {
+            if (map[y][x] != DOT_EMPTY) {
+                throw new Exception("Клетка занята!");
+            }
+            map[y][x] = DOT_HUMAN;
+        } else {
+            throw new Exception("Можно вводить только цифры от 1 до " + SIZE);
+        }
+
+        return isWin(DOT_HUMAN);
+    }
+
+    private static void printMessageUserAnswer(String message) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < userAnswer.length; i++) {
+            sb.append(i + 1);
+            sb.append(" - ");
+            sb.append(userAnswer[i]);
+            if (i != userAnswer.length - 1) {
+                sb.append(", ");
+            }
+        }
+
+        System.out.println(message + " (" + sb + ")");
+    }
+
+    private static void aiTurn() {
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                if (map[i][j] == DOT_EMPTY) {
+                    map[i][j] = DOT_AI;
+                    if (isWin(DOT_AI)) {
+                        return;
+                    } else {
+                        map[i][j] = DOT_HUMAN;
+                        if (isWin(DOT_HUMAN)) {
+                            map[i][j] = DOT_AI;
+                            return;
+                        } else {
+                            map[i][j] = DOT_EMPTY;
+                        }
+                    }
+                }
+            }
+        }
+
+        Random random = new Random();
+
+        do {
+            int x = random.nextInt(SIZE);
+            int y = random.nextInt(SIZE);
+            if (map[x][y] == DOT_EMPTY) {
+                map[x][y] = DOT_AI;
+                break;
+            }
+        } while (true);
+    }
+
+    private static boolean playAgain(String message, Scanner scanner)
+    {
+        printMap();
+        printMessageUserAnswer(message);
+
+        while (true) {
+            try {
+                int answer = scanner.nextInt();
+                switch(answer) {
+                    case 1:
+                        initMap();
+                        printMap();
+                        return true;
+                    case 2:
+                        return false;
+                    default:
+                        throw new Exception();
+                }
+            } catch (Exception ex) {
+                printMessageUserAnswer("Введите корректный ответ! Начать заново?");
+            }
+        }
+    }
+
     private static boolean isWin(char dotType) {
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
-                if (isWinX(j, i, dotType) || isWinY(j, i, dotType) ||
-                        isWinDiagonalLeft(j, i, dotType) || isWinDiagonalRight(j, i, dotType)) {
+                if (isWinX(j, i, dotType) || isWinY(j, i, dotType) || isWinDiagonalLeft(j, i, dotType) || isWinDiagonalRight(j, i, dotType)) {
                     return true;
                 }
             }
@@ -160,55 +252,5 @@ public class MainApp {
             }
         }
         return true;
-    }
-
-    private static void aiTurn() {
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
-                if (map[i][j] == DOT_EMPTY) {
-                    map[i][j] = DOT_AI;
-                    if (isWin(DOT_AI)) {
-                        return;
-                    } else {
-                        map[i][j] = DOT_HUMAN;
-                        if (isWin(DOT_HUMAN)) {
-                            map[i][j] = DOT_AI;
-                            return;
-                        } else {
-                            map[i][j] = DOT_EMPTY;
-                        }
-                    }
-                }
-            }
-        }
-
-        Random random = new Random();
-
-        do {
-            int x = random.nextInt(SIZE);
-            int y = random.nextInt(SIZE);
-            if (map[x][y] == DOT_EMPTY) {
-                map[x][y] = DOT_AI;
-                break;
-            }
-        } while (true);
-    }
-
-    private static boolean humanTurn(int y, int x) throws Exception {
-        if (x < SIZE && x >= 0 && y < SIZE && y >= 0) {
-            if (map[y][x] != DOT_EMPTY) {
-                throw new Exception("Клетка занята!");
-            }
-            map[y][x] = DOT_HUMAN;
-        } else {
-            throw new Exception("Можно вводить только цифры от 1 до " + SIZE);
-        }
-
-        return isWin(DOT_HUMAN);
-    }
-
-    private static void printMessage(String message) {
-        printMap();
-        System.out.println(message);
     }
 }
