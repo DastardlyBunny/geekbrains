@@ -250,7 +250,7 @@ public class MainApp {
     }
 
     private static boolean isWinDiagonalRight(int x, int y, char dotType) {
-        if (y - (WIN_COUNT - 1) < 0 || SIZE - x < WIN_COUNT || SIZE + y < WIN_COUNT) {
+        if (y - (WIN_COUNT - 1) < 0 || SIZE - x < WIN_COUNT) {
             return false;
         }
         for (int i = 0; i < WIN_COUNT; i++) {
