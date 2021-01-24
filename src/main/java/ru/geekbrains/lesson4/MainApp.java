@@ -83,7 +83,7 @@ public class MainApp {
         for (int i = 0; i <= SIZE; i++) {
             System.out.print(i + " ");
         }
-
+        System.out.print("X");
         System.out.println();
 
         for (int x = 0; x < SIZE; x++) {
@@ -94,6 +94,7 @@ public class MainApp {
             System.out.println();
         }
 
+        System.out.println("Y");
         System.out.println();
     }
 
