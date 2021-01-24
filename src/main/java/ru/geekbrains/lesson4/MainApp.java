@@ -211,7 +211,7 @@ public class MainApp {
     }
 
     private static boolean isWinX (int x, int y, char dotType) {
-        if (SIZE - x < WIN_COUNT || y == SIZE) {
+        if (SIZE - x < WIN_COUNT) {
             return false;
         }
         for (int i = 0; i < WIN_COUNT; i++) {
@@ -224,7 +224,7 @@ public class MainApp {
     }
 
     private static boolean isWinY (int x, int y, char dotType) {
-        if (x == SIZE || SIZE - y < WIN_COUNT) {
+        if (SIZE - y < WIN_COUNT) {
             return false;
         }
         for (int i = 0; i < WIN_COUNT; i++) {
