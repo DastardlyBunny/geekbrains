@@ -163,8 +163,23 @@ public class MainApp {
     }
 
     private static void aiTurn() {
-        if (checkAiWin() || checkHumanWin()) {
-            return;
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                if (map[i][j] == DOT_EMPTY) {
+                    map[i][j] = DOT_AI;
+                    if (isWin(DOT_AI)) {
+                        return;
+                    } else {
+                        map[i][j] = DOT_HUMAN;
+                        if (isWin(DOT_HUMAN)) {
+                            map[i][j] = DOT_AI;
+                            return;
+                        } else {
+                            map[i][j] = DOT_EMPTY;
+                        }
+                    }
+                }
+            }
         }
 
         Random random = new Random();
@@ -177,39 +192,6 @@ public class MainApp {
                 break;
             }
         } while (true);
-    }
-
-    private static boolean checkHumanWin() {
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
-                if (map[i][j] == DOT_EMPTY) {
-                    map[i][j] = DOT_HUMAN;
-                    if (!isWin(DOT_HUMAN)) {
-                        map[i][j] = DOT_EMPTY;
-                    } else {
-                        map[i][j] = DOT_AI;
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
-    private static boolean checkAiWin() {
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
-                if (map[i][j] == DOT_EMPTY) {
-                    map[i][j] = DOT_AI;
-                    if (!isWin(DOT_AI)) {
-                        map[i][j] = DOT_EMPTY;
-                    } else {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
     }
 
     private static boolean humanTurn(int y, int x) throws Exception {
