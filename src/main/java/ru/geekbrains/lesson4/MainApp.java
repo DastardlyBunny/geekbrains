@@ -23,41 +23,48 @@ public class MainApp {
         printMap();
 
         while (true) {
-            Scanner scanner = new Scanner(System.in);
             try {
+                Scanner scanner = new Scanner(System.in);
+
                 System.out.println("Введите число Y:");
                 int y = scanner.nextInt() - 1;
+
                 System.out.println("Введите число X:");
                 int x = scanner.nextInt() - 1;
+
                 if (canTurn()) {
-                    if (!humanTurn(y, x)) {
-                        continue;
-                    }
-                    if (checkWin(DOT_HUMAN)) {
-                        System.out.println("Человек победил");
-                        printMap();
+                    if (humanTurn(y, x)) {
+                        printMessage("Человек победил");
                         break;
                     }
                 } else {
-                    System.out.println("Ничья");
+                    printMessage("Ничья");
                 }
+
                 if (canTurn()) {
                     aiTurn();
-                    if (checkWin(DOT_AI)) {
-                        System.out.println("ИИ победил");
-                        printMap();
+                    if (isWin(DOT_AI)) {
+                        printMessage("ИИ победил");
                         break;
                     }
                 } else {
-                    System.out.println("Ничья");
+                    printMessage("Ничья");
                 }
                 printMap();
             } catch (InputMismatchException ex) {
-                System.out.println("Можно вводить только цифры от 1 до " + SIZE);
+                printMessage("Можно вводить только цифры от 1 до " + SIZE);
             } catch (Exception ex) {
-                System.out.println(ex.getMessage());
+                printMessage(ex.getMessage());
             }
             System.out.println();
+        }
+    }
+
+    private static void initMap() {
+        for (int x = 0; x < SIZE; x++) {
+            for (int y = 0; y < SIZE; y++) {
+                map[x][y] = DOT_EMPTY;
+            }
         }
     }
 
@@ -75,81 +82,8 @@ public class MainApp {
             }
             System.out.println();
         }
+
         System.out.println();
-    }
-
-    private static void initMap() {
-        for (int x = 0; x < SIZE; x++) {
-            for (int y = 0; y < SIZE; y++) {
-                map[x][y] = DOT_EMPTY;
-            }
-        }
-    }
-
-    private static boolean checkWin(char dotType) {
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
-                if (checkWinX(j, i, dotType) || checkWinY(j, i, dotType) ||
-                    checkWinDiagonalLeft(j, i, dotType) || checkWinDiagonalRight(j, i, dotType)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    private static boolean checkWinX (int x, int y, char dotType) {
-        if (x + WIN_COUNT - 1 > SIZE - 1 || y > SIZE - 1) {
-            return false;
-        }
-        for (int i = 0; i < WIN_COUNT; i++) {
-            if (map[y][x + i] != dotType) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private static boolean checkWinY (int x, int y, char dotType) {
-        if (x > SIZE - 1 || y + WIN_COUNT - 1 > SIZE - 1) {
-            return false;
-        }
-        for (int i = 0; i < WIN_COUNT; i++) {
-            if (map[y + i][x] != dotType) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private static boolean checkWinDiagonalLeft (int x, int y, char dotType) {
-        int coordX = x + WIN_COUNT - 1;
-        int coordY = y + WIN_COUNT - 1;
-        if (coordX > SIZE - 1 || coordY > SIZE - 1) {
-            return false;
-        }
-        for (int i = 0; i < WIN_COUNT; i++) {
-            if (map[y + i][x + i] != dotType) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private static boolean checkWinDiagonalRight(int x, int y, char dotType) {
-        int coordX = x + WIN_COUNT - 1;
-        int coordY = y - WIN_COUNT - 1;
-
-        if (coordX < 0 || coordY < 0 || coordX > SIZE - 1 || coordY > SIZE - 1) {
-            return false;
-        }
-
-        for (int i = 0; i < WIN_COUNT; i++) {
-            if (map[y - i][x + i] != dotType) {
-                return false;
-            }
-        }
-        return true;
     }
 
     private static boolean canTurn() {
@@ -160,35 +94,81 @@ public class MainApp {
                 }
             }
         }
+
         return false;
     }
 
-    public static void aiTurn() {
+    private static boolean isWin(char dotType) {
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
-                if (map[i][j] == DOT_EMPTY) {
-                    map[i][j] = DOT_AI;
-                    if (!checkWin(DOT_AI)) {
-                        map[i][j] = DOT_EMPTY;
-                    } else {
-                        return;
-                    }
+                if (isWinX(j, i, dotType) || isWinY(j, i, dotType) ||
+                        isWinDiagonalLeft(j, i, dotType) || isWinDiagonalRight(j, i, dotType)) {
+                    return true;
                 }
             }
         }
 
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
-                if (map[i][j] == DOT_EMPTY) {
-                    map[i][j] = DOT_HUMAN;
-                    if (!checkWin(DOT_HUMAN)) {
-                        map[i][j] = DOT_EMPTY;
-                    } else {
-                        map[i][j] = DOT_AI;
-                        return;
-                    }
-                }
+        return false;
+    }
+
+    private static boolean isWinX (int x, int y, char dotType) {
+        if (x + WIN_COUNT - 1 > SIZE - 1 || y == SIZE) {
+            return false;
+        }
+        for (int i = 0; i < WIN_COUNT; i++) {
+            if (map[y][x + i] != dotType) {
+                return false;
             }
+        }
+
+        return true;
+    }
+
+    private static boolean isWinY (int x, int y, char dotType) {
+        if (x == SIZE || y + WIN_COUNT > SIZE) {
+            return false;
+        }
+        for (int i = 0; i < WIN_COUNT; i++) {
+            if (map[y + i][x] != dotType) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private static boolean isWinDiagonalLeft (int x, int y, char dotType) {
+        if (x + WIN_COUNT > SIZE || y + WIN_COUNT > SIZE) {
+            return false;
+        }
+        for (int i = 0; i < WIN_COUNT; i++) {
+            if (map[y + i][x + i] != dotType) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private static boolean isWinDiagonalRight(int x, int y, char dotType) {
+        int coordX = x + WIN_COUNT;
+        int coordY = y - WIN_COUNT;
+
+        if (coordX < 0 || coordY < 0 || coordX > SIZE || coordY > SIZE) {
+            return false;
+        }
+        for (int i = 0; i < WIN_COUNT; i++) {
+            if (map[y - i][x + i] != dotType) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private static void aiTurn() {
+        if (checkHumanWin() || checkAiWin()) {
+            return;
         }
 
         Random random = new Random();
@@ -203,6 +183,39 @@ public class MainApp {
         } while (true);
     }
 
+    private static boolean checkHumanWin() {
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                if (map[i][j] == DOT_EMPTY) {
+                    map[i][j] = DOT_HUMAN;
+                    if (!isWin(DOT_HUMAN)) {
+                        map[i][j] = DOT_EMPTY;
+                    } else {
+                        map[i][j] = DOT_AI;
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    private static boolean checkAiWin() {
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                if (map[i][j] == DOT_EMPTY) {
+                    map[i][j] = DOT_AI;
+                    if (!isWin(DOT_AI)) {
+                        map[i][j] = DOT_EMPTY;
+                    } else {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     private static boolean humanTurn(int y, int x) throws Exception {
         if (x < SIZE && x >= 0 && y < SIZE && y >= 0) {
             if (map[y][x] != DOT_EMPTY) {
@@ -213,6 +226,11 @@ public class MainApp {
             throw new Exception("Можно вводить только цифры от 1 до " + SIZE);
         }
 
-        return true;
+        return isWin(DOT_HUMAN);
+    }
+
+    private static void printMessage(String message) {
+        printMap();
+        System.out.println(message);
     }
 }
