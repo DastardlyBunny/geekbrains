@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class MainApp {
 
-    private static final int SIZE = 3;
+    private static final int SIZE = 5;
 
     private static final char[][] map = new char[SIZE][SIZE];
 
@@ -16,7 +16,7 @@ public class MainApp {
 
     private static final char DOT_EMPTY = '*';
 
-    private static final int WIN_COUNT = 2;
+    private static final int WIN_COUNT = 4;
 
     private static final String[] userAnswer = { "ДА", "НЕТ" };
 
@@ -47,8 +47,7 @@ public class MainApp {
                 }
 
                 if (canTurn()) {
-                    aiTurn();
-                    if (isWin(DOT_AI)) {
+                    if (aiTurn()) {
                         if (!playAgain("ИИ победил! Начать заново?")) {
                             break;
                         }
@@ -136,18 +135,18 @@ public class MainApp {
         System.out.println(message + " (" + variantsString + ")");
     }
 
-    private static void aiTurn() {
+    private static boolean aiTurn() {
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
                 if (map[i][j] == DOT_EMPTY) {
                     map[i][j] = DOT_AI;
                     if (isWin(DOT_AI)) {
-                        return;
+                        return true;
                     } else {
                         map[i][j] = DOT_HUMAN;
                         if (isWin(DOT_HUMAN)) {
                             map[i][j] = DOT_AI;
-                            return;
+                            return false;
                         } else {
                             map[i][j] = DOT_EMPTY;
                         }
@@ -167,6 +166,8 @@ public class MainApp {
                 break;
             }
         } while (true);
+
+        return false;
     }
 
     private static boolean playAgain(String message)
