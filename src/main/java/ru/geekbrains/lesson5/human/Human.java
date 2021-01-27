@@ -98,7 +98,7 @@ public class Human {
     }
 
     public boolean heal() {
-        hp += random.nextInt(60);
+        hp += random.nextInt(50);
         if (hp < 0) {
             return false;
         }
