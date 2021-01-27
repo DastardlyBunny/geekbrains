@@ -32,8 +32,7 @@ public class MainApp {
                 }
             }
 
-            int ill = human.ill();
-            if (ill > 0) {
+            if (human.ill() > 0) {
                 if (!human.heal()) {
                     System.out.printf(human.getName() + " умер. Неизлечимая болезнь. Возраст: %d.", age);
                     return;
