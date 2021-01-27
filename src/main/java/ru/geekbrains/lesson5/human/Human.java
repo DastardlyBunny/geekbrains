@@ -6,7 +6,7 @@ public class Human {
 
     private String name;
     private int age;
-    private int hunger;
+    private int hunger = 0;
     private int happy;
     private int knowledge;
     private double money;
@@ -80,12 +80,13 @@ public class Human {
 
     public void eat() {
         int food = random.nextInt(50);
-        hunger += (hunger - food < 0) ? 0 : food;
+        hunger = Math.max(hunger - food, 0);
         System.out.println(name + " ест. Уровень голода: " + hunger);
     }
 
     public void work() {
         double value = random.nextDouble() * 300 * knowledge;
+        hunger += random.nextInt(100);
         money += value;
         System.out.printf(name + " работает. Доход: %.2f. Баланс: %.2f%n", value, money);
     }
