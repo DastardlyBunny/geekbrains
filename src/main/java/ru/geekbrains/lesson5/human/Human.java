@@ -42,10 +42,6 @@ public class Human {
         this.happy = happy;
     }
 
-    public int getKnowledge() {
-        return knowledge;
-    }
-
     public void sleep() {
         System.out.println(name + " уснул");
     }
@@ -83,8 +79,8 @@ public class Human {
     }
 
     public void eat() {
-        int food = random.nextInt(500);
-        hunger = (food > hunger) ? 0 : hunger - food;
+        int food = random.nextInt(50);
+        hunger += (hunger - food < 0) ? 0 : food;
         System.out.println(name + " ест. Уровень голода: " + hunger);
     }
 
@@ -101,7 +97,7 @@ public class Human {
     }
 
     public boolean heal() {
-        hp += random.nextInt(50);
+        hp += random.nextInt(60);
         if (hp < 0) {
             return false;
         }

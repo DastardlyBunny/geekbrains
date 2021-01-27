@@ -40,7 +40,7 @@ public class MainApp {
                 }
             }
 
-            while (human.getHappy() < 100 && age < 20) {
+            while (human.getHappy() < 100) {
                 human.play();
             }
 
