@@ -71,7 +71,7 @@ public class Human {
         happy += random.nextInt(100);
         int cost = random.nextInt(10000);
         if (cost > money) {
-            System.out.printf(name + " не сделал покупку на %d. Нехватило денег. Баланс: %.2f%n", cost, money);
+            System.out.printf(name + " не сделал покупку на %d. Не хватило денег. Баланс: %.2f%n", cost, money);
             return;
         }
         money -= cost;
@@ -79,9 +79,22 @@ public class Human {
     }
 
     public void eat() {
-        int food = random.nextInt(50);
-        hunger = Math.max(hunger - food, 0);
-        System.out.println(name + " ест. Уровень голода: " + hunger);
+        if (age > 18) {
+            int cost = random.nextInt(5000);
+            if (cost > money) {
+                System.out.printf(name + " не поел. Не хватило денег. Баланс: %.2f%n", money);
+            } else {
+                money -= cost;
+                int food = random.nextInt(50);
+                hunger = Math.max(hunger - food, 0);
+                System.out.printf(name + " ест. Потратил %d. Уровень голода: %d. Баланс: %.2f%n", cost, hunger,  money);
+            }
+        } else {
+            int food = random.nextInt(50);
+            hunger = Math.max(hunger - food, 0);
+            System.out.println(name + " ест. Уровень голода: " + hunger);
+        }
+
     }
 
     public void work() {
