@@ -20,7 +20,6 @@ public class MainApp {
             human.eat();
 
             if (age > 4 && age < 30) {
-                System.out.println("Уровень знаний: " + human.getKnowledge());
                 human.study();
             }
 

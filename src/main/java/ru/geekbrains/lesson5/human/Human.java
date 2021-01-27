@@ -12,7 +12,7 @@ public class Human {
     private double money;
     private int hp = 100;
 
-    private Random random = new Random();
+    private final Random random = new Random();
 
     public Human(String name) {
         this.name = name;
@@ -83,7 +83,7 @@ public class Human {
     }
 
     public void eat() {
-        int food = random.nextInt(100);
+        int food = random.nextInt(500);
         hunger = (food > hunger) ? 0 : hunger - food;
         System.out.println(name + " ест. Уровень голода: " + hunger);
     }
