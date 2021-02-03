@@ -28,4 +28,12 @@ public class Cat {
     public int getAppetite() {
         return appetite;
     }
+
+    public void info() {
+        if (satiety) {
+            System.out.println(name + " сыт");
+        } else {
+            System.out.println(name + " голоден");
+        }
+    }
 }

@@ -14,10 +14,12 @@ public class MainApp {
         for (Cat c : cat) {
             plate.info();
             c.eat(plate);
+            c.info();
             if (!c.isSatiety()) {
                 plate.addFood(c);
                 c.eat(plate);
             }
+            c.info();
             System.out.println();
         }
     }
