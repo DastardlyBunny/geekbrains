@@ -11,6 +11,7 @@ public class Human {
     private int knowledge;
     private double money;
     private int hp = 100;
+    private boolean sleep = false;
 
     private final Random random = new Random();
 
@@ -43,65 +44,90 @@ public class Human {
     }
 
     public void sleep() {
-        System.out.println(name + " уснул");
+        if (!isSleep()) {
+            sleep = true;
+            System.out.println(name + " уснул");
+        }
     }
 
     public void wakeUp() {
-        System.out.println(name + " проснулся");
+        if (isSleep()) {
+            sleep = false;
+            System.out.println(name + " проснулся");
+        }
     }
 
     public void play() {
-        happy += random.nextInt(100);
-        System.out.println(name + " играет, " + "уровень радости - " + happy);
+        if (!isSleep()) {
+            happy += random.nextInt(100);
+            System.out.println(name + " играет, " + "уровень радости - " + happy);
+        }
+    }
+
+    public boolean isSleep() {
+        if (sleep) {
+            System.out.println(name + " спит");
+        }
+        return sleep;
     }
 
     public void study() {
-        knowledge += random.nextInt(10);
-        System.out.println(name + " учится. Уровень знаний: " + knowledge);
+        if (!isSleep()) {
+            knowledge += random.nextInt(10);
+            System.out.println(name + " учится. Уровень знаний: " + knowledge);
+        }
     }
 
     public void cry() {
-        System.out.println(name + " плачет");
-        if (hunger > 50) {
-            System.out.println(name + " хочет есть. Уровень голода: " + hunger);
+        if (!isSleep()) {
+            System.out.println(name + " плачет");
+            if (hunger > 50) {
+                System.out.println(name + " хочет есть. Уровень голода: " + hunger);
+            }
         }
     }
 
     public void buy() {
-        happy += random.nextInt(100);
-        int cost = random.nextInt(10000);
-        if (cost > money) {
-            System.out.printf(name + " не сделал покупку на %d. Не хватило денег. Баланс: %.2f%n", cost, money);
-            return;
+        if (!isSleep()) {
+            happy += random.nextInt(100);
+            int cost = random.nextInt(10000);
+            if (cost > money) {
+                System.out.printf(name + " не сделал покупку на %d. Не хватило денег. Баланс: %.2f%n", cost, money);
+                return;
+            }
+            money -= cost;
+            System.out.printf(name + " сделал покупку. Потратил: %d. Баланс: %.2f%n", cost, money);
         }
-        money -= cost;
-        System.out.printf(name + " сделал покупку. Потратил: %d. Баланс: %.2f%n", cost, money);
     }
 
     public void eat() {
-        if (age > 18) {
-            int cost = random.nextInt(5000);
-            if (cost > money) {
-                System.out.printf(name + " не поел. Не хватило денег. Баланс: %.2f%n", money);
+        if (!isSleep()) {
+            if (age > 18) {
+                int cost = random.nextInt(5000);
+                if (cost > money) {
+                    System.out.printf(name + " не поел. Не хватило денег. Баланс: %.2f%n", money);
+                } else {
+                    money -= cost;
+                    int food = random.nextInt(50);
+                    hunger = Math.max(hunger - food, 0);
+                    System.out.printf(name + " ест. Потратил %d. Уровень голода: %d. Баланс: %.2f%n", cost, hunger, money);
+                }
             } else {
-                money -= cost;
                 int food = random.nextInt(50);
                 hunger = Math.max(hunger - food, 0);
-                System.out.printf(name + " ест. Потратил %d. Уровень голода: %d. Баланс: %.2f%n", cost, hunger,  money);
+                System.out.println(name + " ест. Уровень голода: " + hunger);
             }
-        } else {
-            int food = random.nextInt(50);
-            hunger = Math.max(hunger - food, 0);
-            System.out.println(name + " ест. Уровень голода: " + hunger);
         }
 
     }
 
     public void work() {
-        double value = random.nextDouble() * 300 * knowledge;
-        hunger += random.nextInt(100);
-        money += value;
-        System.out.printf(name + " работает. Доход: %.2f. Баланс: %.2f%n", value, money);
+        if (!isSleep()) {
+            double value = random.nextDouble() * 300 * knowledge;
+            hunger += random.nextInt(100);
+            money += value;
+            System.out.printf(name + " работает. Доход: %.2f. Баланс: %.2f%n", value, money);
+        }
     }
 
     public void pension() {
