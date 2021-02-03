@@ -11,9 +11,8 @@ public class Cat {
     }
 
     public void eat(Plate p) {
-        if (p.decreaseFood(this)) {
+        if (!satiety && p.decreaseFood(appetite)) {
             satiety = true;
-            System.out.println(name + " поел " + appetite);
         }
     }
 
@@ -21,19 +20,11 @@ public class Cat {
         return satiety;
     }
 
-    public String getName() {
-        return name;
-    }
-
     public int getAppetite() {
         return appetite;
     }
 
     public void info() {
-        if (satiety) {
-            System.out.println(name + " сыт");
-        } else {
-            System.out.println(name + " голоден");
-        }
+        System.out.println(name + (satiety ? " сыт" : " голоден"));
     }
 }

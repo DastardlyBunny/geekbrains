@@ -7,22 +7,15 @@ public class Plate {
         this.food = food;
     }
 
-    public boolean decreaseFood(Cat cat) {
-        if (cat.getAppetite() <= food) {
-            food -= cat.getAppetite();
+    public boolean decreaseFood(int appetite) {
+        if (appetite <= food) {
+            food -= appetite;
             return true;
         }
-        System.out.println("В тарелке не хватило еды, чтобы " + cat.getName() + " мог поесть " + cat.getAppetite());
         return false;
     }
 
-    public void info() {
-        System.out.println("Еды в тарелке: " + food);
-    }
-
-    public void addFood(Cat cat) {
-        int foodAmount = cat.getAppetite() - food;
-        food += foodAmount;
-        System.out.println("Добавили в тарелку " + foodAmount + " еды.");
+    public void addFood(int appetite) {
+        food += appetite;
     }
 }

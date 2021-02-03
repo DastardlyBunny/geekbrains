@@ -12,15 +12,12 @@ public class MainApp {
         Plate plate = new Plate(100);
 
         for (Cat c : cat) {
-            plate.info();
             c.eat(plate);
-            c.info();
             if (!c.isSatiety()) {
-                plate.addFood(c);
+                plate.addFood(c.getAppetite());
                 c.eat(plate);
-                c.info();
             }
-            System.out.println();
+            c.info();
         }
     }
 }
