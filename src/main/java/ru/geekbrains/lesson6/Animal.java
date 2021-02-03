@@ -13,6 +13,10 @@ public abstract class Animal {
     }
 
     public void run(int distance) {
+        if (distance <= 0) {
+            System.out.println("Некорректная дистанция."); // типа эксепшн
+            return;
+        }
         if (distance <= limitRun) {
             System.out.println(name + " пробежал " + distance + " м.");
         } else {
@@ -21,6 +25,10 @@ public abstract class Animal {
     }
 
     public void swim(int distance) {
+        if (distance <= 0) {
+            System.out.println("Некорректная дистанция."); // типа эксепшн
+            return;
+        }
         if (distance <= limitSwim) {
             System.out.println(name + " проплыл " + distance + " м.");
         } else {
