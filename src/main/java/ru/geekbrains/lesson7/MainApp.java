@@ -7,7 +7,7 @@ public class MainApp {
                 new Cat("Barsik2", 40),
                 new Cat("Barsik3", 35),
                 new Cat("Barsik4", 20),
-            };
+        };
 
         Plate plate = new Plate(100);
 
@@ -18,8 +18,8 @@ public class MainApp {
             if (!c.isSatiety()) {
                 plate.addFood(c);
                 c.eat(plate);
+                c.info();
             }
-            c.info();
             System.out.println();
         }
     }
