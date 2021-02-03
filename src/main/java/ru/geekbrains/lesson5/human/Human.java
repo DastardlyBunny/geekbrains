@@ -11,7 +11,7 @@ public class Human {
     private int knowledge;
     private double money;
     private int hp = 100;
-    private boolean isSleep = false;
+    private boolean sleep = false;
 
     private final Random random = new Random();
 
@@ -45,14 +45,14 @@ public class Human {
 
     public void sleep() {
         if (!isSleep()) {
-            isSleep = true;
+            sleep = true;
             System.out.println(name + " уснул");
         }
     }
 
     public void wakeUp() {
         if (isSleep()) {
-            isSleep = false;
+            sleep = false;
             System.out.println(name + " проснулся");
         }
     }
@@ -65,10 +65,10 @@ public class Human {
     }
 
     public boolean isSleep() {
-        if (isSleep) {
+        if (sleep) {
             System.out.println(name + " спит");
         }
-        return isSleep;
+        return sleep;
     }
 
     public void study() {
