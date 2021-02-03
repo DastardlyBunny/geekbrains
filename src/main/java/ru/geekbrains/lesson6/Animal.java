@@ -5,7 +5,7 @@ public abstract class Animal {
     int limitRun;
     int limitSwim;
 
-    static int count;
+    private static int count;
 
     public Animal(String name) {
         this.name = name;
