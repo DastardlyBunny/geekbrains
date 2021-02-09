@@ -12,10 +12,11 @@ public class GameField extends JPanel {
     static final byte DOT_HUMAN = PlayerType.HUMAN.getPlayerType();
     static final byte DOT_AI = PlayerType.AI.getPlayerType();
     static final byte DOT_EMPTY = PlayerType.NOBODY.getPlayerType();
-    private static boolean isGameOn;
-    private static byte[][] map;
+    private boolean isGameOn;
 
-    private PlayerType state;
+    private byte[][] map;
+
+    private final GameState state = new GameState();
 
     public GameField() {
         this.addMouseListener(new MouseAdapter() {
@@ -44,85 +45,11 @@ public class GameField extends JPanel {
                 }
             }
         }
-        if (!checkWin(DOT_HUMAN) && !checkWin(DOT_AI)) {
+        if (!state.checkWin(map, DOT_HUMAN) && !state.checkWin(map, DOT_AI)) {
             isGameOn = false;
-            setState(DOT_EMPTY);
+            state.setState(DOT_EMPTY);
         }
         repaint();
-    }
-
-    private boolean checkWin(byte dotType) {
-        if (isWinVY(dotType) || isWinVX(dotType)) {
-            setState(dotType);
-            return true;
-        }
-        for (int i = 0; i < MAP_SIZE; i++) {
-            if (isWinX(i, dotType) || isWinY(i, dotType)) {
-                setState(dotType);
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public static void setGameOn(boolean gameOn) {
-        isGameOn = gameOn;
-    }
-
-    public static byte[][] getMap() {
-        return map;
-    }
-
-    private void setState(byte dotType) {
-        isGameOn = false;
-        if (dotType == DOT_HUMAN) {
-            state = PlayerType.HUMAN;
-        } else if (dotType == DOT_AI) {
-            state = PlayerType.AI;
-        } else {
-            state = PlayerType.NOBODY;
-        }
-    }
-
-    private boolean isWinX (int x, byte dotType) {
-        for (int i = 0; i < MAP_SIZE; i++) {
-            if (map[i][x] != dotType) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    private boolean isWinY (int y, byte dotType) {
-        for (int i = 0; i < MAP_SIZE; i++) {
-            if (map[y][i] != dotType) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    private boolean isWinVY (byte dotType) {
-        for (int i = 0; i < MAP_SIZE; i++) {
-            if (map[i][i] != dotType) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    private boolean isWinVX (byte dotType) {
-        for (int i = 0; i < MAP_SIZE; i++) {
-            if (map[i][MAP_SIZE - 1 - i] != dotType) {
-                return false;
-            }
-        }
-
-        return true;
     }
 
     public void startGame() {
@@ -149,7 +76,7 @@ public class GameField extends JPanel {
         }
         if (map[cellX][cellY] == DOT_EMPTY) {
             map[cellX][cellY] = dot;
-            checkWin(dot);
+            state.checkWin(map, dot);
             repaint();
             return true;
         }

@@ -4,7 +4,10 @@ public class GameState {
 
     PlayerType state;
 
-    private boolean checkWin(byte dotType) {
+    private byte[][] map;
+
+    public boolean checkWin(byte[][] map, byte dotType) {
+        this.map = map;
         if (isWinVY(dotType) || isWinVX(dotType)) {
             setState(dotType);
             return true;
@@ -19,8 +22,11 @@ public class GameState {
         return false;
     }
 
-    private void setState(byte dotType) {
-        GameField.setGameOn(false);
+    public String getWinnerMessage() {
+        return state.getWinnerMessage();
+    }
+
+    public void setState(byte dotType) {
         if (dotType == GameField.DOT_HUMAN) {
             state = PlayerType.HUMAN;
         } else if (dotType == GameField.DOT_AI) {
@@ -30,9 +36,9 @@ public class GameState {
         }
     }
 
-    private boolean isWinX (int x, byte dotType) {
+    public boolean isWinX (int x, byte dotType) {
         for (int i = 0; i < GameField.MAP_SIZE; i++) {
-            if (GameField.getMap()[i][x] != dotType) {
+            if (map[i][x] != dotType) {
                 return false;
             }
         }
@@ -40,9 +46,9 @@ public class GameState {
         return true;
     }
 
-    private boolean isWinY (int y, byte dotType) {
+    public boolean isWinY (int y, byte dotType) {
         for (int i = 0; i < GameField.MAP_SIZE; i++) {
-            if (GameField.getMap()[y][i] != dotType) {
+            if (map[y][i] != dotType) {
                 return false;
             }
         }
@@ -50,9 +56,9 @@ public class GameState {
         return true;
     }
 
-    private boolean isWinVY (byte dotType) {
+    public boolean isWinVY (byte dotType) {
         for (int i = 0; i < GameField.MAP_SIZE; i++) {
-            if (GameField.getMap()[i][i] != dotType) {
+            if (map[i][i] != dotType) {
                 return false;
             }
         }
@@ -60,9 +66,9 @@ public class GameState {
         return true;
     }
 
-    private boolean isWinVX (byte dotType) {
+    public boolean isWinVX (byte dotType) {
         for (int i = 0; i < GameField.MAP_SIZE; i++) {
-            if (GameField.getMap()[i][GameField.MAP_SIZE - 1 - i] != dotType) {
+            if (map[i][GameField.MAP_SIZE - 1 - i] != dotType) {
                 return false;
             }
         }
