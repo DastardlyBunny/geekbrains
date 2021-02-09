@@ -1,16 +1,16 @@
 package ru.geekbrains.lesson8;
 
 public enum PlayerType {
-    HUMAN ("PLAYER WINS!", (byte)1),
-    AI   ("AI WINS!", (byte)2),
-    NOBODY   ("NOBODY WINS!", (byte)0);
+    HUMAN ((byte)1, "PLAYER WINS!"),
+    AI ((byte)2, "AI WINS!"),
+    NOBODY ((byte)0, "NOBODY WINS!");
 
     private final String winnerMessage;
     private final byte playerType;
 
-    PlayerType(String winnerMessage, byte playerType) {
-        this.winnerMessage = winnerMessage;
+    PlayerType(byte playerType, String winnerMessage) {
         this.playerType = playerType;
+        this.winnerMessage = winnerMessage;
     }
 
     String getWinnerMessage() {

@@ -12,6 +12,7 @@ public class GameField extends JPanel {
     static final byte DOT_HUMAN = PlayerType.HUMAN.getPlayerType();
     static final byte DOT_AI = PlayerType.AI.getPlayerType();
     static final byte DOT_EMPTY = PlayerType.NOBODY.getPlayerType();
+
     private boolean isGameOn;
 
     private byte[][] map;
@@ -76,7 +77,10 @@ public class GameField extends JPanel {
         }
         if (map[cellX][cellY] == DOT_EMPTY) {
             map[cellX][cellY] = dot;
-            state.checkWin(map, dot);
+            if (state.checkWin(map, dot)) {
+                isGameOn = false;
+                state.setState(dot);
+            }
             repaint();
             return true;
         }
@@ -92,13 +96,11 @@ public class GameField extends JPanel {
                 ((Graphics2D) g).setStroke(new BasicStroke(MAP_SIZE));
                 g.setColor(Color.BLACK);
                 g.drawRect(i * CELL_SIZE, j * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+                ((Graphics2D) g).setStroke(new BasicStroke(6));
                 if (map[i][j] == DOT_HUMAN) {
-                    ((Graphics2D) g).setStroke(new BasicStroke(6));
                     g.setColor(Color.GREEN);
                     g.drawOval(i * CELL_SIZE + 10, j * CELL_SIZE + 10, CELL_SIZE - 20, CELL_SIZE - 20);
-                }
-                if (map[i][j] == DOT_AI) {
-                    ((Graphics2D) g).setStroke(new BasicStroke(6));
+                } else if (map[i][j] == DOT_AI) {
                     g.setColor(Color.RED);
                     g.drawLine(i * CELL_SIZE + 20, j * CELL_SIZE + 20, (i + 1) * CELL_SIZE - 20, (j + 1) * CELL_SIZE - 20);
                     g.drawLine(i * CELL_SIZE + 20, (j + 1) * CELL_SIZE - 20, (i + 1) * CELL_SIZE - 20, j * CELL_SIZE + 20);
@@ -106,27 +108,31 @@ public class GameField extends JPanel {
             }
         }
         if (!isGameOn) {
-            g.setColor(new Color(255, 255, 255, 100));
-            g.fillRect(0, 0, getWidth(), getHeight());
-
-            drawCenteredString(
-                    g,
-                    "GAME OVER",
-                    new Rectangle(0, 0, CELL_SIZE * MAP_SIZE, CELL_SIZE * MAP_SIZE),
-                    new Font("Times New Roman", Font.BOLD, 48),
-                    Color.BLACK,
-                    0
-            );
-
-            drawCenteredString(
-                    g,
-                    state.getWinnerMessage(),
-                    new Rectangle(0, 0, CELL_SIZE * MAP_SIZE, CELL_SIZE * MAP_SIZE),
-                    new Font("Times New Roman", Font.BOLD, 28),
-                    Color.BLACK,
-                    3
-            );
+            drawWinnerMessage(g);
         }
+    }
+
+    public void drawWinnerMessage(Graphics g) {
+        g.setColor(new Color(255, 255, 255, 100));
+        g.fillRect(0, 0, getWidth(), getHeight());
+
+        drawCenteredString(
+                g,
+                "GAME OVER",
+                new Rectangle(0, 0, CELL_SIZE * MAP_SIZE, CELL_SIZE * MAP_SIZE),
+                new Font("Times New Roman", Font.BOLD, 48),
+                Color.BLACK,
+                0
+        );
+
+        drawCenteredString(
+                g,
+                state.getWinnerMessage(),
+                new Rectangle(0, 0, CELL_SIZE * MAP_SIZE, CELL_SIZE * MAP_SIZE),
+                new Font("Times New Roman", Font.BOLD, 28),
+                Color.BLACK,
+                3
+        );
     }
 
     public void drawCenteredString(Graphics g, String text, Rectangle rect, Font font, Color color, int ascent) {

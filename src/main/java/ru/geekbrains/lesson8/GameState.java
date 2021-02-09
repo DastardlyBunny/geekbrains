@@ -6,6 +6,20 @@ public class GameState {
 
     private byte[][] map;
 
+    public String getWinnerMessage() {
+        return state.getWinnerMessage();
+    }
+
+    public void setState(byte dotType) {
+        if (dotType == GameField.DOT_HUMAN) {
+            state = PlayerType.HUMAN;
+        } else if (dotType == GameField.DOT_AI) {
+            state = PlayerType.AI;
+        } else {
+            state = PlayerType.NOBODY;
+        }
+    }
+
     public boolean checkWin(byte[][] map, byte dotType) {
         this.map = map;
         if (isWinVY(dotType) || isWinVX(dotType)) {
@@ -20,20 +34,6 @@ public class GameState {
         }
 
         return false;
-    }
-
-    public String getWinnerMessage() {
-        return state.getWinnerMessage();
-    }
-
-    public void setState(byte dotType) {
-        if (dotType == GameField.DOT_HUMAN) {
-            state = PlayerType.HUMAN;
-        } else if (dotType == GameField.DOT_AI) {
-            state = PlayerType.AI;
-        } else {
-            state = PlayerType.NOBODY;
-        }
     }
 
     public boolean isWinX (int x, byte dotType) {
