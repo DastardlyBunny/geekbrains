@@ -8,7 +8,7 @@ public class XoForm extends JFrame {
 
     public XoForm() {
         this.setTitle("XO");
-        this.setBounds(500, 300, 378, 440);
+        this.setBounds(500, 300, GameField.MAP_SIZE * GameField.CELL_SIZE + 20, GameField.MAP_SIZE * GameField.CELL_SIZE + 80);
         this.setResizable(false);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 

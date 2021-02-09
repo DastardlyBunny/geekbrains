@@ -6,11 +6,11 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class GameField extends JPanel {
-    private static final int CELL_SIZE = 120;
-    private static final int MAP_SIZE = 3;
-    private static final byte DOT_HUMAN = 1;
-    private static final byte DOT_AI = 2;
-    private static final byte DOT_EMPTY = 0;
+    static final int CELL_SIZE = 120;
+    static final int MAP_SIZE = 3;
+    private static final byte DOT_HUMAN = GameState.HUMAN.winnerType();
+    private static final byte DOT_AI = GameState.AI.winnerType();
+    private static final byte DOT_EMPTY = GameState.NOBODY.winnerType();
     private byte[][] map;
     private boolean isGameOn;
 
@@ -51,17 +51,18 @@ public class GameField extends JPanel {
     }
 
     private boolean checkWin(byte dotType) {
-        for (int i = 0; i < MAP_SIZE; i++) {
-            for (int j = 0; j < MAP_SIZE; j++) {
-                if (isWinX(j, i, dotType) || isWinY(j, i, dotType) || isWinVY(j, i, dotType) || isWinVX(j, i, dotType)) {
+        for (int y = 0; y < MAP_SIZE; y++) {
+            for (int x = 0; x < MAP_SIZE; x++) {
+                if (isWinX(x, dotType) || isWinY(y, dotType) || isWinVY(dotType) || isWinVX(dotType)) {
                     isGameOn = false;
                     if (dotType == DOT_HUMAN) {
-                        state = GameState.USER;
+                        state = GameState.HUMAN;
                     } else if (dotType == DOT_AI) {
                         state = GameState.AI;
                     } else {
                         state = GameState.NOBODY;
                     }
+
                     return true;
                 }
             }
@@ -70,7 +71,7 @@ public class GameField extends JPanel {
         return false;
     }
 
-    private boolean isWinX (int x, int y, byte dotType) {
+    private boolean isWinX (int x, byte dotType) {
         for (int i = 0; i < MAP_SIZE; i++) {
             if (map[i][x] != dotType) {
                 return false;
@@ -80,7 +81,7 @@ public class GameField extends JPanel {
         return true;
     }
 
-    private boolean isWinY (int x, int y, byte dotType) {
+    private boolean isWinY (int y, byte dotType) {
         for (int i = 0; i < MAP_SIZE; i++) {
             if (map[y][i] != dotType) {
                 return false;
@@ -90,7 +91,7 @@ public class GameField extends JPanel {
         return true;
     }
 
-    private boolean isWinVY (int x, int y, byte dotType) {
+    private boolean isWinVY (byte dotType) {
         for (int i = 0; i < MAP_SIZE; i++) {
             if (map[i][i] != dotType) {
                 return false;
@@ -100,7 +101,7 @@ public class GameField extends JPanel {
         return true;
     }
 
-    private boolean isWinVX (int x, int y, byte dotType) {
+    private boolean isWinVX (byte dotType) {
         for (int i = 0; i < MAP_SIZE; i++) {
             if (map[i][MAP_SIZE - 1 - i] != dotType) {
                 return false;
@@ -173,7 +174,7 @@ public class GameField extends JPanel {
                     new Rectangle(0, 0, CELL_SIZE * MAP_SIZE, CELL_SIZE * MAP_SIZE),
                     new Font("Times New Roman", Font.BOLD, 48),
                     Color.BLACK,
-                    true
+                    0
             );
 
             drawCenteredString(
@@ -182,20 +183,17 @@ public class GameField extends JPanel {
                     new Rectangle(0, 0, CELL_SIZE * MAP_SIZE, CELL_SIZE * MAP_SIZE),
                     new Font("Times New Roman", Font.BOLD, 28),
                     Color.BLACK,
-                    false
+                    3
             );
         }
     }
 
-    public void drawCenteredString(Graphics g, String text, Rectangle rect, Font font, Color color, Boolean isMainText) {
+    public void drawCenteredString(Graphics g, String text, Rectangle rect, Font font, Color color, int ascent) {
         FontMetrics metrics = g.getFontMetrics(font);
 
         int x = rect.x + (rect.width - metrics.stringWidth(text)) / 2;
-        int y = rect.y + ((rect.height - metrics.getHeight()) / 2);
+        int y = rect.y + ((rect.height - metrics.getHeight()) / 2) + metrics.getAscent() * ascent;
 
-        if (!isMainText) {
-            y += metrics.getAscent() * 3;
-        }
         g.setFont(font);
         g.setColor(color);
         g.drawString(text, x, y);
