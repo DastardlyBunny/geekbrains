@@ -9,13 +9,13 @@ public class GameField extends JPanel {
     static final int CELL_SIZE = 120;
     static final int MAP_SIZE = 3;
 
-    private static final byte DOT_HUMAN = GameState.HUMAN.getPlayerType();
-    private static final byte DOT_AI = GameState.AI.getPlayerType();
-    private static final byte DOT_EMPTY = GameState.NOBODY.getPlayerType();
+    static final byte DOT_HUMAN = PlayerType.HUMAN.getPlayerType();
+    static final byte DOT_AI = PlayerType.AI.getPlayerType();
+    static final byte DOT_EMPTY = PlayerType.NOBODY.getPlayerType();
+    private static boolean isGameOn;
+    private static byte[][] map;
 
-    private byte[][] map;
-    private boolean isGameOn;
-    private GameState state;
+    private PlayerType state;
 
     public GameField() {
         this.addMouseListener(new MouseAdapter() {
@@ -66,14 +66,22 @@ public class GameField extends JPanel {
         return false;
     }
 
+    public static void setGameOn(boolean gameOn) {
+        isGameOn = gameOn;
+    }
+
+    public static byte[][] getMap() {
+        return map;
+    }
+
     private void setState(byte dotType) {
         isGameOn = false;
         if (dotType == DOT_HUMAN) {
-            state = GameState.HUMAN;
+            state = PlayerType.HUMAN;
         } else if (dotType == DOT_AI) {
-            state = GameState.AI;
+            state = PlayerType.AI;
         } else {
-            state = GameState.NOBODY;
+            state = PlayerType.NOBODY;
         }
     }
 
@@ -157,12 +165,12 @@ public class GameField extends JPanel {
                 ((Graphics2D) g).setStroke(new BasicStroke(MAP_SIZE));
                 g.setColor(Color.BLACK);
                 g.drawRect(i * CELL_SIZE, j * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-                if (map[i][j] == 1) {
+                if (map[i][j] == DOT_HUMAN) {
                     ((Graphics2D) g).setStroke(new BasicStroke(6));
                     g.setColor(Color.GREEN);
-                    g.fillOval(i * CELL_SIZE + 10, j * CELL_SIZE + 10, CELL_SIZE - 20, CELL_SIZE - 20);
+                    g.drawOval(i * CELL_SIZE + 10, j * CELL_SIZE + 10, CELL_SIZE - 20, CELL_SIZE - 20);
                 }
-                if (map[i][j] == 2) {
+                if (map[i][j] == DOT_AI) {
                     ((Graphics2D) g).setStroke(new BasicStroke(6));
                     g.setColor(Color.RED);
                     g.drawLine(i * CELL_SIZE + 20, j * CELL_SIZE + 20, (i + 1) * CELL_SIZE - 20, (j + 1) * CELL_SIZE - 20);
