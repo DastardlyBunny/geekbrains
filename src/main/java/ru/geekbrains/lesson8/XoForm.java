@@ -2,11 +2,9 @@ package ru.geekbrains.lesson8;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class XoForm extends JFrame {
-    private GameField gameField;
+    private final GameField gameField;
 
     public XoForm() {
         this.setTitle("XO");
@@ -30,19 +28,9 @@ public class XoForm extends JFrame {
         btnStart.setBackground(Color.WHITE);
         btnExit.setBackground(Color.WHITE);
 
-        btnStart.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                gameField.startGame();
-            }
-        });
+        btnStart.addActionListener(actionEvent -> gameField.startGame());
 
-        btnExit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                System.exit(0);
-            }
-        });
+        btnExit.addActionListener(actionEvent -> System.exit(0));
 
         this.setVisible(true);
     }
