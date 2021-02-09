@@ -6,19 +6,19 @@ public enum GameState {
     NOBODY   ("NOBODY WINS!", (byte)0);
 
     private final String winnerMessage;
-    private final byte winnerType;
+    private final byte playerType;
 
-    GameState(String winnerMessage, byte winnerType) {
+    GameState(String winnerMessage, byte playerType) {
         this.winnerMessage = winnerMessage;
-        this.winnerType = winnerType;
+        this.playerType = playerType;
     }
 
-    String winnerMessage() {
+    String getWinnerMessage() {
         return winnerMessage;
     }
 
-    byte winnerType() {
-        return winnerType;
+    byte getPlayerType() {
+        return playerType;
     }
 
 }

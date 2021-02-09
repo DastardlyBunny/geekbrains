@@ -8,12 +8,13 @@ import java.awt.event.MouseEvent;
 public class GameField extends JPanel {
     static final int CELL_SIZE = 120;
     static final int MAP_SIZE = 3;
-    private static final byte DOT_HUMAN = GameState.HUMAN.winnerType();
-    private static final byte DOT_AI = GameState.AI.winnerType();
-    private static final byte DOT_EMPTY = GameState.NOBODY.winnerType();
+
+    private static final byte DOT_HUMAN = GameState.HUMAN.getPlayerType();
+    private static final byte DOT_AI = GameState.AI.getPlayerType();
+    private static final byte DOT_EMPTY = GameState.NOBODY.getPlayerType();
+
     private byte[][] map;
     private boolean isGameOn;
-
     private GameState state;
 
     public GameField() {
@@ -45,30 +46,35 @@ public class GameField extends JPanel {
         }
         if (!checkWin(DOT_HUMAN) && !checkWin(DOT_AI)) {
             isGameOn = false;
-            state = GameState.NOBODY;
+            setState(DOT_EMPTY);
         }
         repaint();
     }
 
     private boolean checkWin(byte dotType) {
-        for (int y = 0; y < MAP_SIZE; y++) {
-            for (int x = 0; x < MAP_SIZE; x++) {
-                if (isWinX(x, dotType) || isWinY(y, dotType) || isWinVY(dotType) || isWinVX(dotType)) {
-                    isGameOn = false;
-                    if (dotType == DOT_HUMAN) {
-                        state = GameState.HUMAN;
-                    } else if (dotType == DOT_AI) {
-                        state = GameState.AI;
-                    } else {
-                        state = GameState.NOBODY;
-                    }
-
-                    return true;
-                }
+        if (isWinVY(dotType) || isWinVX(dotType)) {
+            setState(dotType);
+            return true;
+        }
+        for (int i = 0; i < MAP_SIZE; i++) {
+            if (isWinX(i, dotType) || isWinY(i, dotType)) {
+                setState(dotType);
+                return true;
             }
         }
 
         return false;
+    }
+
+    private void setState(byte dotType) {
+        isGameOn = false;
+        if (dotType == DOT_HUMAN) {
+            state = GameState.HUMAN;
+        } else if (dotType == DOT_AI) {
+            state = GameState.AI;
+        } else {
+            state = GameState.NOBODY;
+        }
     }
 
     private boolean isWinX (int x, byte dotType) {
@@ -179,7 +185,7 @@ public class GameField extends JPanel {
 
             drawCenteredString(
                     g,
-                    state.winnerMessage(),
+                    state.getWinnerMessage(),
                     new Rectangle(0, 0, CELL_SIZE * MAP_SIZE, CELL_SIZE * MAP_SIZE),
                     new Font("Times New Roman", Font.BOLD, 28),
                     Color.BLACK,
