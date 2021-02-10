@@ -1,7 +1,7 @@
 package ru.geekbrains.lesson8;
 
 public enum PlayerType {
-    HUMAN ((byte)1, "PLAYER WINS!"),
+    HUMAN ((byte)1, "HUMAN WINS!"),
     AI ((byte)2, "AI WINS!"),
     NOBODY ((byte)0, "NOBODY WINS!");
 

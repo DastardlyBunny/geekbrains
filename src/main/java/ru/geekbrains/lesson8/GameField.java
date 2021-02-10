@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Random;
 
 public class GameField extends JPanel {
     static final int CELL_SIZE = 120;
@@ -25,9 +26,7 @@ public class GameField extends JPanel {
             public void mouseReleased(MouseEvent e) {
                 if (isGameOn) {
                     if (e.getButton() == MouseEvent.BUTTON1) {
-                        int cellX = e.getX() / CELL_SIZE;
-                        int cellY = e.getY() / CELL_SIZE;
-                        if (setDotTo(cellX, cellY, DOT_HUMAN)) {
+                        if (humanTurn(e)) {
                             checkDraw();
                             aiTurn();
                         }
@@ -61,25 +60,59 @@ public class GameField extends JPanel {
 
     public void aiTurn() {
         if (isGameOn) {
-            int cellX, cellY;
+            for (int i = 0; i < MAP_SIZE; i++) {
+                for (int j = 0; j < MAP_SIZE; j++) {
+                    if (map[i][j] == DOT_EMPTY) {
+                        map[i][j] = DOT_AI;
+                        if (state.checkWin(map, DOT_AI)) {
+                            isGameOn = false;
+                            state.setState(DOT_AI);
+                            repaint();
+                            return;
+                        } else {
+                            map[i][j] = DOT_HUMAN;
+                            if (state.checkWin(map, DOT_HUMAN)) {
+                                map[i][j] = DOT_AI;
+                                repaint();
+                                return;
+                            } else {
+                                map[i][j] = DOT_EMPTY;
+                            }
+                        }
+                    }
+                }
+            }
+
+            Random random = new Random();
+
             do {
-                cellX = (int) (Math.random() * MAP_SIZE);
-                cellY = (int) (Math.random() * MAP_SIZE);
-            } while (!setDotTo(cellX, cellY, DOT_AI));
+                int x = random.nextInt(MAP_SIZE);
+                int y = random.nextInt(MAP_SIZE);
+
+                if (map[x][y] == DOT_EMPTY) {
+                    map[x][y] = DOT_AI;
+                    break;
+                }
+            } while (true);
+
             repaint();
             checkDraw();
         }
     }
 
-    private boolean setDotTo(int cellX, int cellY, byte dot) {
-        if (cellX < 0 || cellY < 0 || cellX >= MAP_SIZE || cellY >= MAP_SIZE) {
+    private boolean humanTurn(MouseEvent e) {
+        int x = e.getX() / CELL_SIZE;
+        int y = e.getY() / CELL_SIZE;
+
+        if (x < 0 || y < 0 || x >= MAP_SIZE || y >= MAP_SIZE) {
             return false;
         }
-        if (map[cellX][cellY] == DOT_EMPTY) {
-            map[cellX][cellY] = dot;
-            if (state.checkWin(map, dot)) {
+
+        if (map[x][y] == DOT_EMPTY) {
+            map[x][y] = DOT_HUMAN;
+            if (state.checkWin(map, DOT_HUMAN)) {
                 isGameOn = false;
-                state.setState(dot);
+                state.setState(DOT_HUMAN);
             }
             repaint();
             return true;
