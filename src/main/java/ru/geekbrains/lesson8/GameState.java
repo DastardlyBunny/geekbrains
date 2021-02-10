@@ -37,8 +37,8 @@ public class GameState {
     }
 
     public boolean isWinX (int x, byte dotType) {
-        for (int i = 0; i < GameField.MAP_SIZE; i++) {
-            if (map[i][x] != dotType) {
+        for (int y = 0; y < GameField.MAP_SIZE; y++) {
+            if (map[y][x] != dotType) {
                 return false;
             }
         }
@@ -47,18 +47,8 @@ public class GameState {
     }
 
     public boolean isWinY (int y, byte dotType) {
-        for (int i = 0; i < GameField.MAP_SIZE; i++) {
-            if (map[y][i] != dotType) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    public boolean isWinVY (byte dotType) {
-        for (int i = 0; i < GameField.MAP_SIZE; i++) {
-            if (map[i][i] != dotType) {
+        for (int x = 0; x < GameField.MAP_SIZE; x++) {
+            if (map[y][x] != dotType) {
                 return false;
             }
         }
@@ -67,8 +57,18 @@ public class GameState {
     }
 
     public boolean isWinVX (byte dotType) {
-        for (int i = 0; i < GameField.MAP_SIZE; i++) {
-            if (map[i][GameField.MAP_SIZE - 1 - i] != dotType) {
+        for (int x = 0; x < GameField.MAP_SIZE; x++) {
+            if (map[x][x] != dotType) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public boolean isWinVY (byte dotType) {
+        for (int y = 0; y < GameField.MAP_SIZE; y++) {
+            if (map[y][GameField.MAP_SIZE - 1 - y] != dotType) {
                 return false;
             }
         }

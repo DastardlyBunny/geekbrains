@@ -9,15 +9,11 @@ import java.util.Random;
 public class GameField extends JPanel {
     static final int CELL_SIZE = 120;
     static final int MAP_SIZE = 3;
-
     static final byte DOT_HUMAN = PlayerType.HUMAN.getPlayerType();
     static final byte DOT_AI = PlayerType.AI.getPlayerType();
     static final byte DOT_EMPTY = PlayerType.NOBODY.getPlayerType();
-
     private boolean isGameOn;
-
     private byte[][] map;
-
     private final GameState state = new GameState();
 
     public GameField() {
@@ -37,6 +33,32 @@ public class GameField extends JPanel {
         startGame();
     }
 
+    public void startGame() {
+        this.map = new byte[MAP_SIZE][MAP_SIZE];
+        this.isGameOn = true;
+        repaint();
+    }
+
+    private boolean humanTurn(MouseEvent e) {
+        int x = e.getX() / CELL_SIZE;
+        int y = e.getY() / CELL_SIZE;
+
+        if (x < 0 || y < 0 || x >= MAP_SIZE || y >= MAP_SIZE) {
+            return false;
+        }
+
+        if (map[x][y] == DOT_EMPTY) {
+            map[x][y] = DOT_HUMAN;
+            if (state.checkWin(map, DOT_HUMAN)) {
+                isGameOn = false;
+                state.setState(DOT_HUMAN);
+            }
+            repaint();
+            return true;
+        }
+        return false;
+    }
+
     public void checkDraw() {
         for (int i = 0; i < MAP_SIZE; i++) {
             for (int j = 0; j < MAP_SIZE; j++) {
@@ -45,16 +67,8 @@ public class GameField extends JPanel {
                 }
             }
         }
-        if (!state.checkWin(map, DOT_HUMAN) && !state.checkWin(map, DOT_AI)) {
-            isGameOn = false;
-            state.setState(DOT_EMPTY);
-        }
-        repaint();
-    }
-
-    public void startGame() {
-        this.map = new byte[MAP_SIZE][MAP_SIZE];
-        this.isGameOn = true;
+        isGameOn = false;
+        state.setState(DOT_EMPTY);
         repaint();
     }
 
@@ -98,26 +112,6 @@ public class GameField extends JPanel {
             repaint();
             checkDraw();
         }
-    }
-
-    private boolean humanTurn(MouseEvent e) {
-        int x = e.getX() / CELL_SIZE;
-        int y = e.getY() / CELL_SIZE;
-
-        if (x < 0 || y < 0 || x >= MAP_SIZE || y >= MAP_SIZE) {
-            return false;
-        }
-
-        if (map[x][y] == DOT_EMPTY) {
-            map[x][y] = DOT_HUMAN;
-            if (state.checkWin(map, DOT_HUMAN)) {
-                isGameOn = false;
-                state.setState(DOT_HUMAN);
-            }
-            repaint();
-            return true;
-        }
-        return false;
     }
 
     @Override
