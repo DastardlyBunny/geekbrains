@@ -4,7 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Random;
 
 public class GameField extends JPanel {
     static final int CELL_SIZE = 120;
@@ -97,14 +96,14 @@ public class GameField extends JPanel {
                 }
             }
 
-            Random random = new Random();
+            int cellX, cellY;
 
             do {
-                int x = random.nextInt(MAP_SIZE);
-                int y = random.nextInt(MAP_SIZE);
+                cellX = (int) (Math.random() * MAP_SIZE);
+                cellY = (int) (Math.random() * MAP_SIZE);
 
-                if (map[x][y] == DOT_EMPTY) {
-                    map[x][y] = DOT_AI;
+                if (map[cellX][cellY] == DOT_EMPTY) {
+                    map[cellX][cellY] = DOT_AI;
                     break;
                 }
             } while (true);
