@@ -20,7 +20,7 @@ public class Cat implements Participant {
 
     @Override
     public boolean jump(int distance) {
-        if (distance > maxJump) {
+        if (distance < 0 || distance > maxJump) {
             return false;
         }
         System.out.println("Cat jump");
