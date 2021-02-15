@@ -26,6 +26,4 @@ public class Man implements Participant {
         System.out.println("Man jump");
         return true;
     }
-
-
 }

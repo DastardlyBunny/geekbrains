@@ -26,6 +26,4 @@ public class Cat implements Participant {
         System.out.println("Cat jump");
         return true;
     }
-
-
 }
