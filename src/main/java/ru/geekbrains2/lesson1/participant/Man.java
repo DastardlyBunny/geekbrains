@@ -9,10 +9,12 @@ public class Man implements Participant {
         this.maxJump = maxJump;
     }
 
+    @Override
     public int getMaxRun() {
         return maxRun;
     }
 
+    @Override
     public int getMaxJump() {
         return maxJump;
     }
