@@ -10,16 +10,6 @@ public class Cat implements Participant {
     }
 
     @Override
-    public int getMaxRun() {
-        return maxRun;
-    }
-
-    @Override
-    public int getMaxJump() {
-        return maxJump;
-    }
-
-    @Override
     public boolean run(int distance) {
         if (distance > maxRun) {
             return false;

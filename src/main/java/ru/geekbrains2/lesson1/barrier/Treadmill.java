@@ -12,10 +12,6 @@ public class Treadmill implements Barrier {
 
     @Override
     public boolean action(Participant participant) {
-        if (length > participant.getMaxRun()) {
-            return false;
-        }
-        participant.run(length);
-        return true;
+        return participant.run(length);
     }
 }

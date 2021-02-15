@@ -12,10 +12,6 @@ public class Wall implements Barrier {
 
     @Override
     public boolean action(Participant participant) {
-        if (height > participant.getMaxJump()) {
-            return false;
-        }
-        participant.jump(height);
-        return true;
+        return participant.jump(height);
     }
 }
