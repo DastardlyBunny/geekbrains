@@ -9,7 +9,7 @@ public class MainApp {
     private static String[][] strArr = {
         {"1", "2", "3", "4"},
         {"test", "6", "7", "8"},
-        {"9", "10", "11", "12"},
+        {"9", "10", "11"},
         {"13", "14", "15", "16"},
     };
 
@@ -29,7 +29,6 @@ public class MainApp {
         }
 
         int summ = 0;
-        int[][] resultArray = new int[FIXED_ARRAY_SIZE][FIXED_ARRAY_SIZE];
 
         for (int i = 0; i < array.length; i++) {
             if (array[i].length != FIXED_ARRAY_SIZE) {
@@ -37,8 +36,7 @@ public class MainApp {
             }
             for (int j = 0; j < array[i].length; j++) {
                 try {
-                    resultArray[i][j] = Integer.parseInt(array[i][j]);
-                    summ += resultArray[i][j];
+                    summ += Integer.parseInt(array[i][j]);
                 } catch (NumberFormatException e) {
                     throw new MyArrayDataException(i, j);
                 }
