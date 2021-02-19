@@ -20,7 +20,7 @@ public class MainApp {
             System.out.println(e.getMessage());
         } catch (MyArrayDataException e) {
             System.out.printf("Incorrect value for array[%d][%d]\n", e.getOuterIndex(), e.getInnerIndex());
-            System.out.println(e.getMessage()); // ну или так можно
+//            System.out.println(e.getMessage()); // ну или так можно
         }
     }
 
