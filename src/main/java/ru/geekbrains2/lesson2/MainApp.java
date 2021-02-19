@@ -17,22 +17,23 @@ public class MainApp {
         try {
             System.out.println(checkArray(strArr));
         } catch (MyArraySizeException e) {
-            System.out.printf("The array size must be %d by %d.", FIXED_ARRAY_SIZE, FIXED_ARRAY_SIZE);
+            System.out.println(e.getMessage());
         } catch (MyArrayDataException e) {
-            System.out.printf("Incorrect value for [%d][%d]", e.getOuterIndex(), e.getInnerIndex());
+            System.out.printf("Incorrect value for array[%d][%d]\n", e.getOuterIndex(), e.getInnerIndex());
+            System.out.println(e.getMessage()); // ну или так можно
         }
     }
 
     private static int checkArray(String[][] array) throws MyArraySizeException, MyArrayDataException {
         if (array.length != FIXED_ARRAY_SIZE) {
-            throw new MyArraySizeException();
+            throw new MyArraySizeException(FIXED_ARRAY_SIZE);
         }
 
         int summ = 0;
 
         for (int i = 0; i < array.length; i++) {
             if (array[i].length != FIXED_ARRAY_SIZE) {
-                throw new MyArraySizeException();
+                throw new MyArraySizeException(FIXED_ARRAY_SIZE);
             }
             for (int j = 0; j < array[i].length; j++) {
                 try {

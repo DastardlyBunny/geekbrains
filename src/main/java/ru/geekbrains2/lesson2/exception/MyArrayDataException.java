@@ -5,6 +5,7 @@ public class MyArrayDataException extends Exception {
     private final int innerIndex;
 
     public MyArrayDataException(int outerIndex, int innerIndex) {
+        super("Incorrect value for array[" + outerIndex + "][" + innerIndex + "]");
         this.outerIndex = outerIndex;
         this.innerIndex = innerIndex;
     }
