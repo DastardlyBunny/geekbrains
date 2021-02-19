@@ -5,7 +5,6 @@ public class MyArrayDataException extends Exception {
     private final int innerIndex;
 
     public MyArrayDataException(int outerIndex, int innerIndex) {
-
         this.outerIndex = outerIndex;
         this.innerIndex = innerIndex;
     }
