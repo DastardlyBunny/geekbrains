@@ -10,9 +10,7 @@ public class MainApp {
         System.out.println(app.getIdenticalWordCount(words));
 
         Phonebook phonebook = new Phonebook();
-
-        Set<String> hashSet = new HashSet<>(Arrays.asList("89020000001", "89020000002"));
-        phonebook.add("Иванов", hashSet);
+        phonebook.add("Иванов", new HashSet<>(Arrays.asList("89020000001", "89020000002")));
         phonebook.add("Петров", "89020000003");
 
         System.out.println(phonebook.get("Иванов"));
