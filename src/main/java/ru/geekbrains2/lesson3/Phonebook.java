@@ -5,10 +5,14 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Phonebook {
-    private final HashMap<String, Set<String>> map = new HashMap<>();
+    private final HashMap<String, Set<String>> book;
+
+    public Phonebook() {
+        this.book = new HashMap<>();
+    }
 
     public Set<String> get(String key) {
-        HashSet<String> set = (HashSet<String>) map.get(key);
+        HashSet<String> set = (HashSet<String>) book.get(key);
         if (set == null) {
             set = new HashSet<>();
         }
@@ -18,6 +22,6 @@ public class Phonebook {
     public Set<String> add(String key, String value) {
         Set<String> set = get(key);
         set.add(value);
-        return map.put(key, set);
+        return book.put(key, set);
     }
 }
