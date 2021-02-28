@@ -24,4 +24,8 @@ public class Phonebook {
         set.add(value);
         return book.put(key, set);
     }
+
+    public Set<String> add(String key, Set<String> value) {
+        return book.put(key, value);
+    }
 }
