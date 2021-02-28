@@ -4,10 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MainApp {
-    private static final String[] words = {"apple", "orange", "lemon", "banana", "apricot", "avocado", "apple", "lemon", "cherry", "apple"};
-
     public static void main(String[] args) {
-        System.out.println(getIdenticalWordCount());
+        String[] words = {"apple", "orange", "lemon", "banana", "apricot", "avocado", "apple", "lemon", "cherry", "apple"};
+        
+        MainApp app = new MainApp();
+        System.out.println(app.getIdenticalWordCount(words));
 
         Phonebook phonebook = new Phonebook();
         phonebook.add("Иванов", "89020000001");
@@ -17,7 +18,7 @@ public class MainApp {
         System.out.println(phonebook.get("Петров"));
     }
 
-    private static Map<String, Integer> getIdenticalWordCount() {
+    private Map<String, Integer> getIdenticalWordCount(String[] words) {
         Map<String, Integer> map = new HashMap<>();
         for (String word : words) {
             if (!map.containsKey(word)) {
