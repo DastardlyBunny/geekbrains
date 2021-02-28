@@ -1,9 +1,6 @@
 package ru.geekbrains2.lesson3;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class MainApp {
     public static void main(String[] args) {
@@ -12,13 +9,12 @@ public class MainApp {
         MainApp app = new MainApp();
         System.out.println(app.getIdenticalWordCount(words));
 
-        Set<String> hashSet = new HashSet<>();
-        hashSet.add("89020000001");
-        hashSet.add("89020000002");
-
         Phonebook phonebook = new Phonebook();
+
+        Set<String> hashSet = new HashSet<>(Arrays.asList("89020000001", "89020000002"));
         phonebook.add("Иванов", hashSet);
         phonebook.add("Петров", "89020000003");
+
         System.out.println(phonebook.get("Иванов"));
         System.out.println(phonebook.get("Петров"));
     }
