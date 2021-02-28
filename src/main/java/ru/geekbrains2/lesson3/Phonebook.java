@@ -9,13 +9,15 @@ public class Phonebook {
 
     public Set<String> get(String key) {
         HashSet<String> set = (HashSet<String>) map.get(key);
-        if (map.get(key) == null) {
+        if (set == null) {
             set = new HashSet<>();
         }
         return set;
     }
 
-    public Set<String> add(String key, Set<String> value) {
-        return map.put(key, value);
+    public Set<String> add(String key, String value) {
+        Set<String> set = get(key);
+        set.add(value);
+        return map.put(key, set);
     }
 }
