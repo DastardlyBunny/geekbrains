@@ -6,11 +6,14 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class GameField extends JPanel {
-    private final int CELL_SIZE = 120;
-    private final int MAP_SIZE = 3;
-
-    private byte[][] map;
+    static final int CELL_SIZE = 120;
+    static final int MAP_SIZE = 3;
+    static final byte DOT_HUMAN = PlayerType.HUMAN.getPlayerType();
+    static final byte DOT_AI = PlayerType.AI.getPlayerType();
+    static final byte DOT_EMPTY = PlayerType.NOBODY.getPlayerType();
     private boolean isGameOn;
+    private byte[][] map;
+    private final GameState state = new GameState();
 
     public GameField() {
         this.addMouseListener(new MouseAdapter() {
@@ -18,9 +21,7 @@ public class GameField extends JPanel {
             public void mouseReleased(MouseEvent e) {
                 if (isGameOn) {
                     if (e.getButton() == MouseEvent.BUTTON1) {
-                        int cellX = e.getX() / CELL_SIZE;
-                        int cellY = e.getY() / CELL_SIZE;
-                        if (setDotTo(cellX, cellY, (byte) 1)) {
+                        if (humanTurn(e)) {
                             checkDraw();
                             aiTurn();
                         }
@@ -31,46 +32,85 @@ public class GameField extends JPanel {
         startGame();
     }
 
-    public void checkDraw() {
-        for (int i = 0; i < MAP_SIZE; i++) {
-            for (int j = 0; j < MAP_SIZE; j++) {
-                if (map[i][j] == 0) {
-                    return;
-                }
-            }
-        }
-        isGameOn = false;
-        repaint();
-    }
-
     public void startGame() {
         this.map = new byte[MAP_SIZE][MAP_SIZE];
         this.isGameOn = true;
         repaint();
     }
 
-    public void aiTurn() {
-        if (isGameOn) {
-            int cellX, cellY;
-            do {
-                cellX = (int) (Math.random() * MAP_SIZE);
-                cellY = (int) (Math.random() * MAP_SIZE);
-            } while (!setDotTo(cellX, cellY, (byte) 2));
-            repaint();
-            checkDraw();
-        }
-    }
+    private boolean humanTurn(MouseEvent e) {
+        int x = e.getX() / CELL_SIZE;
+        int y = e.getY() / CELL_SIZE;
 
-    private boolean setDotTo(int cellX, int cellY, byte dot) {
-        if (cellX < 0 || cellY < 0 || cellX >= MAP_SIZE || cellY >= MAP_SIZE) {
+        if (x < 0 || y < 0 || x >= MAP_SIZE || y >= MAP_SIZE) {
             return false;
         }
-        if (map[cellX][cellY] == 0) {
-            map[cellX][cellY] = dot;
+
+        if (map[x][y] == DOT_EMPTY) {
+            map[x][y] = DOT_HUMAN;
+            if (state.checkWin(map, DOT_HUMAN)) {
+                isGameOn = false;
+                state.setState(DOT_HUMAN);
+            }
             repaint();
             return true;
         }
         return false;
+    }
+
+    public void checkDraw() {
+        for (int i = 0; i < MAP_SIZE; i++) {
+            for (int j = 0; j < MAP_SIZE; j++) {
+                if (map[i][j] == DOT_EMPTY) {
+                    return;
+                }
+            }
+        }
+        isGameOn = false;
+        state.setState(DOT_EMPTY);
+        repaint();
+    }
+
+    public void aiTurn() {
+        if (isGameOn) {
+            for (int i = 0; i < MAP_SIZE; i++) {
+                for (int j = 0; j < MAP_SIZE; j++) {
+                    if (map[i][j] == DOT_EMPTY) {
+                        map[i][j] = DOT_AI;
+                        if (state.checkWin(map, DOT_AI)) {
+                            isGameOn = false;
+                            state.setState(DOT_AI);
+                            repaint();
+                            return;
+                        } else {
+                            map[i][j] = DOT_HUMAN;
+                            if (state.checkWin(map, DOT_HUMAN)) {
+                                map[i][j] = DOT_AI;
+                                repaint();
+                                return;
+                            } else {
+                                map[i][j] = DOT_EMPTY;
+                            }
+                        }
+                    }
+                }
+            }
+
+            int cellX, cellY;
+
+            do {
+                cellX = (int) (Math.random() * MAP_SIZE);
+                cellY = (int) (Math.random() * MAP_SIZE);
+
+                if (map[cellX][cellY] == DOT_EMPTY) {
+                    map[cellX][cellY] = DOT_AI;
+                    break;
+                }
+            } while (true);
+
+            repaint();
+            checkDraw();
+        }
     }
 
     @Override
@@ -79,16 +119,14 @@ public class GameField extends JPanel {
         g.fillRect(0, 0, MAP_SIZE * CELL_SIZE, MAP_SIZE * CELL_SIZE);
         for (int i = 0; i < MAP_SIZE; i++) {
             for (int j = 0; j < MAP_SIZE; j++) {
-                ((Graphics2D) g).setStroke(new BasicStroke(3));
+                ((Graphics2D) g).setStroke(new BasicStroke(MAP_SIZE));
                 g.setColor(Color.BLACK);
                 g.drawRect(i * CELL_SIZE, j * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-                if (map[i][j] == 1) {
-                    ((Graphics2D) g).setStroke(new BasicStroke(6));
+                ((Graphics2D) g).setStroke(new BasicStroke(6));
+                if (map[i][j] == DOT_HUMAN) {
                     g.setColor(Color.GREEN);
                     g.drawOval(i * CELL_SIZE + 10, j * CELL_SIZE + 10, CELL_SIZE - 20, CELL_SIZE - 20);
-                }
-                if (map[i][j] == 2) {
-                    ((Graphics2D) g).setStroke(new BasicStroke(6));
+                } else if (map[i][j] == DOT_AI) {
                     g.setColor(Color.RED);
                     g.drawLine(i * CELL_SIZE + 20, j * CELL_SIZE + 20, (i + 1) * CELL_SIZE - 20, (j + 1) * CELL_SIZE - 20);
                     g.drawLine(i * CELL_SIZE + 20, (j + 1) * CELL_SIZE - 20, (i + 1) * CELL_SIZE - 20, j * CELL_SIZE + 20);
@@ -96,9 +134,41 @@ public class GameField extends JPanel {
             }
         }
         if (!isGameOn) {
-            g.setColor(Color.BLACK);
-            g.setFont(new Font("Times New Roman", Font.BOLD, 48));
-            g.drawString("GAME OVER", 10, 160);
+            drawWinnerMessage(g);
         }
+    }
+
+    public void drawWinnerMessage(Graphics g) {
+        g.setColor(new Color(255, 255, 255, 100));
+        g.fillRect(0, 0, getWidth(), getHeight());
+
+        drawCenteredString(
+                g,
+                "GAME OVER",
+                new Rectangle(0, 0, CELL_SIZE * MAP_SIZE, CELL_SIZE * MAP_SIZE),
+                new Font("Times New Roman", Font.BOLD, 48),
+                Color.BLACK,
+                0
+        );
+
+        drawCenteredString(
+                g,
+                state.getWinnerMessage(),
+                new Rectangle(0, 0, CELL_SIZE * MAP_SIZE, CELL_SIZE * MAP_SIZE),
+                new Font("Times New Roman", Font.BOLD, 28),
+                Color.BLACK,
+                3
+        );
+    }
+
+    public void drawCenteredString(Graphics g, String text, Rectangle rect, Font font, Color color, int ascent) {
+        FontMetrics metrics = g.getFontMetrics(font);
+
+        int x = rect.x + (rect.width - metrics.stringWidth(text)) / 2;
+        int y = rect.y + ((rect.height - metrics.getHeight()) / 2) + metrics.getAscent() * ascent;
+
+        g.setFont(font);
+        g.setColor(color);
+        g.drawString(text, x, y);
     }
 }
