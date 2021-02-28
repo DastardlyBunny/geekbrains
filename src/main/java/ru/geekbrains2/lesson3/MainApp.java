@@ -17,10 +17,7 @@ public class MainApp {
 
         Phonebook phonebook = new Phonebook();
         phonebook.add("Иванов", hashSet);
-
-        Set<String> customer = phonebook.get("Иванов");
-        customer.add("89020000003");
-        System.out.println(customer);
+        System.out.println(phonebook.get("Иванов"));
     }
 
     private static Map<String, Integer> getIdenticalWordCount() {
