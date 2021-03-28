@@ -16,7 +16,7 @@ public class Box<T extends Fruit> {
         return fruits.size() > 0 ? fruits.size() * fruits.get(0).getWeight() : 0;
     }
 
-    public void addFruitToBox(T... fruits) {
+    public void addFruitsToBox(T... fruits) {
         this.fruits.addAll(Arrays.asList(fruits));
     }
 

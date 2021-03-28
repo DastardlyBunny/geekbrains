@@ -15,19 +15,19 @@ public class MainApp {
         Integer[] newIntArr = arraySwap(intArr, 3, 0);
         String[] newStrArr = arraySwap(strArr, 2, 1);
 
-        ArrayList<Integer> newStrArr1 = toArrayList(newIntArr);
-        ArrayList<String> newStrArr2 = toArrayList(newStrArr);
+        ArrayList<Integer> newIntArrList = toArrayList(newIntArr);
+        ArrayList<String> newStrArrList = toArrayList(newStrArr);
 
         Box<Apple> box = new Box<>();
-        box.addFruitToBox(new Apple(), new Apple(), new Apple());
+        box.addFruitsToBox(new Apple(), new Apple(), new Apple());
 
         Box<Orange> box2 = new Box<>();
-        box2.addFruitToBox(new Orange(), new Orange());
+        box2.addFruitsToBox(new Orange(), new Orange());
 
         System.out.println(box.compare(box2));
 
         Box<Apple> box3 = new Box<>();
-        box3.addFruitToBox(new Apple(), new Apple(), new Apple(), new Apple());
+        box3.addFruitsToBox(new Apple(), new Apple(), new Apple(), new Apple());
 
         box.pourFruitsToBox(box3);
     }
